@@ -8,5 +8,8 @@ class AppImages {
   static const String onboarding2 = '$imagePath/onboarding2.jpg';
 
   //*******  Svg  ************** */
-  static const String logo = '$svgPath/logo.svg';
+  static const String lightLogo = '$svgPath/light_logo.svg';
+  static const String darkLogo = '$svgPath/dark_logo.svg';
+  static const String apple = '$svgPath/apple.svg';
+  static const String google = '$svgPath/google.svg';
 }

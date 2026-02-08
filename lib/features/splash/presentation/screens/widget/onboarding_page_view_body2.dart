@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qent_app/core/services/shared_preference_singelton.dart';
 import 'package:qent_app/core/utils/app_colors.dart';
 import 'package:qent_app/core/utils/app_images.dart';
 import 'package:qent_app/core/utils/app_text_style.dart';
+import 'package:qent_app/core/utils/constants/app_constant.dart';
+import 'package:qent_app/core/utils/constants/app_route_name.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 
 class OnboardingPageViewBody2 extends StatelessWidget {
@@ -41,7 +44,7 @@ class OnboardingPageViewBody2 extends StatelessWidget {
             children: [
               60.verticalSpace,
               SvgPicture.asset(
-                AppImages.logo,
+                AppImages.lightLogo,
                 width: 75.w,
                 height: 75.h,
               ),
@@ -59,7 +62,13 @@ A New Experience With Car rental.''',
               40.verticalSpace,
               AppButton(
                 text: 'Get Started',
-                onTap: () {},
+                onTap: () {
+                  Prefs.setBool(AppConstant.KIsOnboardingSeen, true);
+                  Navigator.pushReplacementNamed(
+                    context,
+                    AppRouteName.loginScreen,
+                  );
+                },
               ),
               68.verticalSpace,
             ],

@@ -8,18 +8,17 @@ import 'package:qent_app/core/utils/constants/app_route_name.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 import 'package:qent_app/core/widgets/app_text_field.dart';
 import 'package:qent_app/core/widgets/or_widget.dart';
-import 'package:qent_app/features/auth/presentation/screens/widgets/rememberme_section.dart';
 import 'package:qent_app/features/auth/presentation/screens/widgets/social_login_button.dart';
 import 'package:qent_app/features/auth/presentation/screens/widgets/rich_text_link.dart';
 
-class LoginScreenBody extends StatefulWidget {
-  const LoginScreenBody({super.key});
+class SignupScreenBody extends StatefulWidget {
+  const SignupScreenBody({super.key});
 
   @override
-  State<LoginScreenBody> createState() => _LoginScreenBodyState();
+  State<SignupScreenBody> createState() => _SignupScreenBodyState();
 }
 
-class _LoginScreenBodyState extends State<LoginScreenBody> {
+class _SignupScreenBodyState extends State<SignupScreenBody> {
   ValueNotifier<bool> isPasswordVisible = ValueNotifier<bool>(false);
 
   @override
@@ -43,13 +42,19 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                 ],
               ),
               50.verticalSpace,
-              Text(
-                'Welcome Back\nReady to hit the road.',
-                style: AppTextStyles.semiBold30,
+              Center(
+                child: Text(
+                  'Sign Up',
+                  style: AppTextStyles.semiBold30,
+                ),
               ),
               40.verticalSpace,
               const AppTextField(
-                hintText: 'Email/Phone Number',
+                hintText: 'Full Name',
+              ),
+              18.verticalSpace,
+              const AppTextField(
+                hintText: 'Email Address',
               ),
               18.verticalSpace,
               ValueListenableBuilder(
@@ -71,21 +76,23 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   );
                 },
               ),
-              28.verticalSpace,
-              const RemembermeSection(),
+              18.verticalSpace,
+              const AppTextField(
+                hintText: 'Country',
+              ),
               28.verticalSpace,
               AppButton(
-                text: 'Login',
+                text: 'Sing up',
                 onTap: () {},
               ),
               18.verticalSpace,
               AppButton(
-                text: 'Sing up',
+                text: 'Login',
                 backgroundColor: AppColors.secondaryColor,
                 textColor: AppColors.blackColor,
                 onTap: () {
                   Navigator.pushReplacementNamed(
-                      context, AppRouteName.signUpScreen);
+                      context, AppRouteName.loginScreen);
                 },
               ),
               Padding(
@@ -97,13 +104,13 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
               18.verticalSpace,
               SocialLoginButton(
                   onPressed: () {}, text: 'Google Pay', icon: AppImages.google),
-              50.verticalSpace,
+              28.verticalSpace,
               RichTextLink(
-                text1: "Don't have an account? ",
-                text2: 'Sign Up.',
+                text1: "Already have an account? ",
+                text2: 'Login',
                 onTap: () {
                   Navigator.pushReplacementNamed(
-                      context, AppRouteName.signUpScreen);
+                      context, AppRouteName.loginScreen);
                 },
               ),
               50.verticalSpace,

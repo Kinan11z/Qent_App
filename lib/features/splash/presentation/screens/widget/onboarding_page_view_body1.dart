@@ -43,7 +43,7 @@ class OnboardingPageViewBody1 extends StatelessWidget {
             children: [
               60.verticalSpace,
               SvgPicture.asset(
-                AppImages.logo,
+                AppImages.lightLogo,
                 width: 75.w,
                 height: 75.h,
               ),

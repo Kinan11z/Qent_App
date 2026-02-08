@@ -37,6 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.1.0
   flutter_screenutil: ^5.9.3
+  country_code_picker: ^3.0.0
+  flutter_otp_text_field: ^1.5.0
+  shared_preferences: ^2.5.3
+
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +52,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_native_splash: ^2.4.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -100,3 +105,43 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Flutter Native Splash configuration
+flutter_native_splash:
+  # This package generates native code to customize Flutter's default white native splash screen
+  # with background color and splash image.
+  # Customize the parameters below, and run the following command in the terminal:
+  # flutter pub run flutter_native_splash:create
+  # To restore Flutter's default white splash screen, run the following command in the terminal:
+  # flutter pub run flutter_native_splash:remove
+
+  # Color or image to set as background
+  color: "#000000"  # Black background
+  image: assets/images/splash_logo.png
+  
+  # Optional: The image will be placed in the center of the screen
+  # Note: The image must be a PNG file (not SVG)
+  # You need to create a white logo PNG file and place it in assets/images/
+  # Example: image: assets/images/splash_logo.png
+  # image: assets/images/splash_logo.png
+  
+  # Optional: Set to true to remove the splash screen on Android when the app is launched
+  # remove_android_splash: false
+  
+  # Optional: Set to true to remove the splash screen on iOS when the app is launched
+  # remove_ios_splash: false
+  
+  # Optional: Set to true to use full screen mode on Android
+  # android_fullscreen: true
+  
+  # Optional: Set to true to use full screen mode on iOS
+  # ios_fullscreen: true
+  
+  # Optional: Set the color of the status bar
+  # android_status_bar_color: "#000000"
+  
+  # Optional: Set the color of the navigation bar
+  # android_navigation_bar_color: "#000000"
+  
+  # Optional: Set the background color for iOS
+  # ios_background_color: "#000000"

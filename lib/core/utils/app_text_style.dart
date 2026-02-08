@@ -13,14 +13,39 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.whiteColor,
   );
+  static TextStyle semiBold16 = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.whiteColor,
+  );
   static TextStyle bold18 = TextStyle(
     fontSize: 18.sp,
     fontWeight: FontWeight.w700,
     color: AppColors.whiteColor,
   );
+  static TextStyle bold30 = TextStyle(
+    fontSize: 30.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.blackColor,
+  );
+  static TextStyle semiBold30 = TextStyle(
+    fontSize: 30.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.blackColor,
+  );
+  static TextStyle semiBold14 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.blackColor,
+  );
   static TextStyle regular16 = TextStyle(
     fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     color: AppColors.whiteColor,
+  );
+  static TextStyle regular14 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grayHintTextColor,
   );
 }

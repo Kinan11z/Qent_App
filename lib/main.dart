@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qent_app/core/helper_functions/on_generate.dart';
+import 'package:qent_app/core/services/shared_preference_singelton.dart';
+import 'package:qent_app/core/utils/app_colors.dart';
 import 'package:qent_app/core/utils/constants/app_route_name.dart';
-import 'package:qent_app/features/splash/presentation/screens/onboarding_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Prefs.init();
   runApp(const QentApp());
 }
 
@@ -19,9 +22,12 @@ class QentApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, children) {
         return MaterialApp(
-          theme: ThemeData(fontFamily: 'Roboto'),
+          theme: ThemeData(
+            fontFamily: 'Roboto',
+            scaffoldBackgroundColor: AppColors.scaffoldColor,
+          ),
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRouteName.onBoardingScreen,
+          initialRoute: AppRouteName.splashScreen,
           onGenerateRoute: AppRouter.generateRoute,
         );
       },
