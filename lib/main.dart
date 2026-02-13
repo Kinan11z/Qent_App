@@ -4,9 +4,14 @@ import 'package:qent_app/core/helper_functions/on_generate.dart';
 import 'package:qent_app/core/services/shared_preference_singelton.dart';
 import 'package:qent_app/core/utils/app_colors.dart';
 import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/utils/di/di.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
+  setupServicesLocator(prefs);
   await Prefs.init();
   runApp(const QentApp());
 }

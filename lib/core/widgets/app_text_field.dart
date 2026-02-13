@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qent_app/core/utils/app_colors.dart';
 import 'package:qent_app/core/utils/app_text_style.dart';
@@ -10,18 +11,34 @@ class AppTextField extends StatelessWidget {
       this.controller,
       this.suffixIcon,
       this.isTextVisible,
+      this.enabled,
+      this.prefixIcon,
+      this.isNubmer,
       this.validator});
   final String hintText;
+  final bool? enabled;
   final TextEditingController? controller;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final bool? isTextVisible;
+  final bool? isNubmer;
+
   final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       controller: controller,
       obscureText: isTextVisible ?? false,
       validator: validator,
+      keyboardType:
+          isNubmer == true ? TextInputType.number : TextInputType.text,
+      inputFormatters: isNubmer == true
+          ? [
+              FilteringTextInputFormatter.digitsOnly,
+              // LengthLimitingTextInputFormatter(10),
+            ]
+          : [],
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
         hintText: hintText,
@@ -29,6 +46,8 @@ class AppTextField extends StatelessWidget {
         hintStyle: AppTextStyles.regular14,
         fillColor: AppColors.whiteColor,
         filled: true,
+        errorMaxLines: 3,
+        prefixIcon: prefixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(

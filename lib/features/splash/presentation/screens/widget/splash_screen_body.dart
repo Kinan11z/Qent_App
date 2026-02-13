@@ -32,7 +32,7 @@ class _SplashScreenBodyState extends State<SplashScreenBody> {
 
   void excuteNavigation() {
     Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 5),
       () {
         bool isOnboardingSeen = Prefs.getBool(AppConstant.KIsOnboardingSeen);
         if (isOnboardingSeen) {
