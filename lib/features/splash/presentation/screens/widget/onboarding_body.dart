@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qent_app/core/utils/app_images.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
+import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/features/splash/presentation/screens/widget/onboarding_page_view_body1.dart';
 import 'package:qent_app/features/splash/presentation/screens/widget/onboarding_page_view_body2.dart';
 

@@ -1,16 +1,26 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_images.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
+import 'package:qent_app/core/utils/di/di.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 import 'package:qent_app/core/widgets/app_text_field.dart';
+import 'package:qent_app/features/auth/data/model/params/request_verify_code_params.dart';
+import 'package:qent_app/features/auth/presentation/manager/auth_bloc/auth_bloc.dart';
+
+import '../../../../../core/services/validation.dart';
 
 class VerifyPhoneScreenBody extends StatefulWidget {
-  const VerifyPhoneScreenBody({super.key});
+  const VerifyPhoneScreenBody(
+      {super.key, required this.phoneNumber, required this.countryCode});
+
+  final String phoneNumber;
+  final String countryCode;
 
   @override
   State<VerifyPhoneScreenBody> createState() => _VerifyPhoneScreenBodyState();
@@ -18,13 +28,14 @@ class VerifyPhoneScreenBody extends StatefulWidget {
 
 class _VerifyPhoneScreenBodyState extends State<VerifyPhoneScreenBody> {
   final _formKey = GlobalKey<FormState>();
-  CountryCode _selectedCountry = CountryCode.fromCode('US');
+  late CountryCode _selectedCountry;
   late TextEditingController phoneController;
 
   @override
   void initState() {
     super.initState();
-    phoneController = TextEditingController();
+    _selectedCountry = CountryCode.fromDialCode(widget.countryCode);
+    phoneController = TextEditingController(text: widget.phoneNumber);
   }
 
   @override
@@ -33,101 +44,124 @@ class _VerifyPhoneScreenBodyState extends State<VerifyPhoneScreenBody> {
     super.dispose();
   }
 
-  String? _validatePhoneNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your phone number';
-    }
-
-    // Remove any spaces, dashes, or other non-digit characters
-    final digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
-
-    // Check if phone number contains only digits
-    if (digitsOnly.isEmpty) {
-      return 'Please enter a valid phone number';
-    }
-
-    // Check minimum length (usually 7-15 digits)
-    if (digitsOnly.length < 7) {
-      return 'Phone number is too short';
-    }
-
-    if (digitsOnly.length > 15) {
-      return 'Phone number is too long';
-    }
-
-    return null;
-  }
-
   void _handleContinue() {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(
-        context,
-        AppRouteName.verifyCodeScreen,
-        arguments: '${_selectedCountry.dialCode}${phoneController.text}',
+      getIt<AuthBloc>().add(
+        RequestVerifyCodeEvent(
+          requestVerifyCodeParams: RequestVerifyCodeParams(
+            body: RequestVerifyCodeParamsBody(
+              phone: '${_selectedCountry.dialCode}${phoneController.text}',
+            ),
+          ),
+        ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                20.verticalSpace,
-                Row(
-                  children: [
-                    SvgPicture.asset(AppImages.darkLogo),
-                    10.horizontalSpace,
-                    Text(
-                      'Qent',
-                      style: AppTextStyles.bold30,
-                    )
-                  ],
-                ),
-                210.verticalSpace,
-                Center(
-                  child: Text(
-                    'Verify your phone number',
-                    style: AppTextStyles.semiBold30,
-                    textAlign: TextAlign.center,
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: getIt<AuthBloc>(),
+      listener: (context, state) {
+        if (state is RequestVerifyCodeLoaded) {
+          Navigator.pushNamed(
+            context,
+            AppRouteName.verifyCodeScreen,
+            arguments: {
+              'phoneNumber':
+                  '${_selectedCountry.dialCode}${phoneController.text}',
+              'verifyToken': state.requestVerifyCodeEntity.verifyToken,
+            },
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('✅${state.requestVerifyCodeEntity.message ?? ''}'),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  '✅ Your code: ${state.requestVerifyCodeEntity.code ?? ''}'),
+            ),
+          );
+        }
+        if (state is RequestVerifyCodeError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('❌${state.errorMessage ?? ''}'),
+            ),
+          );
+        }
+      },
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  20.verticalSpace,
+                  Row(
+                    children: [
+                      SvgPicture.asset(AppImages.darkLogo),
+                      10.horizontalSpace,
+                      Text(
+                        'Qent',
+                        style: AppTextStyles.bold30,
+                      )
+                    ],
                   ),
-                ),
-                16.verticalSpace,
-                Center(
-                  child: Text(
-                    "We have sent you an SMS with a code to number",
-                    style: AppTextStyles.regular14,
-                    textAlign: TextAlign.center,
+                  210.verticalSpace,
+                  Center(
+                    child: Text(
+                      'Verify your phone number',
+                      style: AppTextStyles.semiBold30,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                40.verticalSpace,
-                _CountryField(
-                  selectedCountry: _selectedCountry,
-                  onCountryChanged: (CountryCode country) {
-                    setState(() {
-                      _selectedCountry = country;
-                    });
-                  },
-                ),
-                18.verticalSpace,
-                AppTextField(
-                  hintText: 'Phone Number',
-                  controller: phoneController,
-                  validator: _validatePhoneNumber,
-                ),
-                28.verticalSpace,
-                AppButton(
-                  text: 'Continue',
-                  onTap: _handleContinue,
-                ),
-                50.verticalSpace,
-              ],
+                  16.verticalSpace,
+                  Center(
+                    child: Text(
+                      "We have sent you an SMS with a code to number",
+                      style: AppTextStyles.regular14,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  40.verticalSpace,
+                  _CountryField(
+                    selectedCountry: _selectedCountry,
+                    onCountryChanged: (CountryCode country) {
+                      setState(() {
+                        _selectedCountry = country;
+                      });
+                    },
+                  ),
+                  18.verticalSpace,
+                  AppTextField(
+                    hintText: 'Phone Number',
+                    controller: phoneController,
+                    validator: FormValidators.validatePhoneNumber,
+                  ),
+                  28.verticalSpace,
+                  BlocBuilder<AuthBloc, AuthState>(
+                    bloc: getIt<AuthBloc>(),
+                    builder: (context, state) {
+                      if (state is RequestVerifyCodeLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return AppButton(
+                        text: 'Continue',
+                        onTap: _handleContinue,
+                      );
+                    },
+                  ),
+                  50.verticalSpace,
+                ],
+              ),
             ),
           ),
         ),

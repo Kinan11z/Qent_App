@@ -9,6 +9,7 @@ class UserModel {
   final bool? phoneIsVerified;
   final CountryModel? country;
   final LocationModel? location;
+  final num? balance;
 
   UserModel({
     required this.id,
@@ -18,6 +19,7 @@ class UserModel {
     required this.phoneIsVerified,
     required this.country,
     required this.location,
+    required this.balance,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class UserModel {
       phoneIsVerified: json['phone_is_verified'] ?? false,
       country: CountryModel.fromJson(json['country']),
       location: LocationModel.fromJson(json['location']),
+      balance: json['balance'],
     );
   }
   Map<String, dynamic> toJson() {
@@ -40,6 +43,7 @@ class UserModel {
       'phone_is_verified': phoneIsVerified,
       'country': country?.toJson(),
       'location': location?.toJson(),
+      'balance': balance,
     };
   }
 
@@ -52,6 +56,7 @@ class UserModel {
     bool? phoneIsVerified,
     CountryModel? country,
     LocationModel? location,
+    num? balance,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -61,6 +66,7 @@ class UserModel {
       phoneIsVerified: phoneIsVerified ?? this.phoneIsVerified,
       country: country ?? this.country,
       location: location ?? this.location,
+      balance: balance ?? this.balance,
     );
   }
 }

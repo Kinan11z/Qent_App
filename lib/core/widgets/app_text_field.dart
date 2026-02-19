@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField(
@@ -10,18 +10,22 @@ class AppTextField extends StatelessWidget {
       required this.hintText,
       this.controller,
       this.suffixIcon,
-      this.isTextVisible,
+      this.isTextHidden,
       this.enabled,
       this.prefixIcon,
+      this.onTap,
       this.isNubmer,
+      this.readOnly,
       this.validator});
   final String hintText;
   final bool? enabled;
   final TextEditingController? controller;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
-  final bool? isTextVisible;
+  final bool? isTextHidden;
   final bool? isNubmer;
+  final bool? readOnly;
+  final Function()? onTap;
 
   final String? Function(String?)? validator;
   @override
@@ -29,7 +33,7 @@ class AppTextField extends StatelessWidget {
     return TextFormField(
       enabled: enabled,
       controller: controller,
-      obscureText: isTextVisible ?? false,
+      obscureText: isTextHidden ?? false,
       validator: validator,
       keyboardType:
           isNubmer == true ? TextInputType.number : TextInputType.text,
@@ -39,6 +43,8 @@ class AppTextField extends StatelessWidget {
               // LengthLimitingTextInputFormatter(10),
             ]
           : [],
+      readOnly: readOnly ?? false,
+      onTap: onTap,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
         hintText: hintText,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
 
 abstract class AppTextStyles {
   static TextStyle semiBold50 = TextStyle(

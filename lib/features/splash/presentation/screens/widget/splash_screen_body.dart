@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/services/shared_preference_singelton.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_images.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/utils/constants/app_constant.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
 
 class SplashScreenBody extends StatefulWidget {
   const SplashScreenBody({super.key});
@@ -34,7 +34,8 @@ class _SplashScreenBodyState extends State<SplashScreenBody> {
     Future.delayed(
       const Duration(seconds: 5),
       () {
-        bool isOnboardingSeen = Prefs.getBool(AppConstant.KIsOnboardingSeen);
+        bool isOnboardingSeen =
+            SharedPreferenceServices.getBool(AppConstant.KIsOnboardingSeen);
         if (isOnboardingSeen) {
           Navigator.pushReplacementNamed(context, AppRouteName.loginScreen);
         } else {

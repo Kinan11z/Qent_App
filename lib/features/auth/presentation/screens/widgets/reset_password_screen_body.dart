@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_images.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
+import 'package:qent_app/core/utils/di/di.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 import 'package:qent_app/core/widgets/app_text_field.dart';
+import 'package:qent_app/features/auth/data/model/params/forgot_password_params.dart';
+import 'package:qent_app/features/auth/presentation/manager/auth_bloc/auth_bloc.dart';
 import 'package:qent_app/features/auth/presentation/screens/widgets/rich_text_link.dart';
 
-class ResetPasswordScreenBody extends StatefulWidget {
-  const ResetPasswordScreenBody({super.key});
+import '../../../../../core/services/validation.dart';
 
+class ResetPasswordScreenBody extends StatefulWidget {
+  const ResetPasswordScreenBody({
+    super.key,
+    required this.email,
+  });
+  final ValueChanged<String> email;
   @override
   State<ResetPasswordScreenBody> createState() =>
       _ResetPasswordScreenBodyState();
@@ -27,29 +36,16 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
     super.dispose();
   }
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your email';
-    }
-
-    // Email regex pattern
-    final emailRegex = RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    );
-
-    if (!emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email address';
-    }
-
-    return null;
-  }
-
   void _handleContinue() {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(
-        context,
-        AppRouteName.verifyPhoneScreen,
+      getIt<AuthBloc>().add(
+        ForgotPasswordEvent(
+          forgotPasswordParams: ForgotPasswordParams(
+            body: ForgotPasswordParamsBody(email: _emailController.text),
+          ),
+        ),
       );
+      widget.email(_emailController.text);
     }
   }
 
@@ -94,12 +90,20 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
                 AppTextField(
                   hintText: 'Email',
                   controller: _emailController,
-                  validator: _validateEmail,
+                  validator: FormValidators.validateEmail,
                 ),
                 28.verticalSpace,
-                AppButton(
-                  text: 'Continue',
-                  onTap: _handleContinue,
+                BlocBuilder<AuthBloc, AuthState>(
+                  bloc: getIt<AuthBloc>(),
+                  builder: (context, state) {
+                    if (state is ForgotPasswordLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return AppButton(
+                      text: 'Continue',
+                      onTap: _handleContinue,
+                    );
+                  },
                 ),
                 28.verticalSpace,
                 GestureDetector(

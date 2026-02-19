@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qent_app/core/utils/di/di.dart';
-import 'package:qent_app/features/auth/presentation/screens/widgets/verify_code_screen_body.dart';
 
 import '../manager/auth_bloc/auth_bloc.dart';
+import 'widgets/confirm_reset_password_screenbody.dart';
 
-class VerifyCodeScreen extends StatelessWidget {
-  final String phoneNumber;
-  final String verifyToken;
+class ConfirmResetPasswordScreen extends StatelessWidget {
+  final String email;
+  final String resetToken;
 
-  const VerifyCodeScreen({
+  const ConfirmResetPasswordScreen({
     super.key,
-    required this.phoneNumber,
-    required this.verifyToken,
+    required this.email,
+    required this.resetToken,
   });
 
   @override
@@ -21,23 +20,23 @@ class VerifyCodeScreen extends StatelessWidget {
       create: (context) => AuthBloc(),
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is RequestVerifyCodeLoaded) {
+          if (state is ForgotPasswordLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                    '✅ Your code: ${state.requestVerifyCodeEntity.code ?? ''}'),
+                    '✅ Your code: ${state.forgotPasswordEntity.code ?? ''}'),
               ),
             );
           }
-          if (state is ConfirmVerifyCodeLoaded) {
+          if (state is ConfirmResetPasswordLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content:
-                    Text('✅${state.confirmVerifyCodeEntity.message ?? ''}'),
+                    Text('✅${state.confirmResetPasswordEntity.message ?? ''}'),
               ),
             );
           }
-          if (state is ConfirmVerifyCodeError) {
+          if (state is SignUpError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('❌${state.errorMessage ?? ''}'),
@@ -46,9 +45,9 @@ class VerifyCodeScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          body: VerifyCodeScreenBody(
-            phoneNumber: phoneNumber,
-            verifyToken: verifyToken,
+          body: ConfirmResetPasswordScreenbody(
+            email: email,
+            resetToken: resetToken,
           ),
         ),
       ),

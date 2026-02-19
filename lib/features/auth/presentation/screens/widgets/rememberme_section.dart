@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
+import 'package:qent_app/core/widgets/custom_check_box.dart';
 
 class RemembermeSection extends StatefulWidget {
   const RemembermeSection({
@@ -23,20 +24,7 @@ class _RemembermeSectionState extends State<RemembermeSection> {
         ValueListenableBuilder(
           valueListenable: isRememberMe,
           builder: (context, isRemember, child) {
-            return Checkbox(
-              value: isRemember,
-              onChanged: (value) {
-                isRememberMe.value = value ?? false;
-              },
-              fillColor: WidgetStatePropertyAll(
-                isRemember ? AppColors.primaryColor : null,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.r),
-              ),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.compact,
-            );
+            return CustomCheckBox(controller: isRememberMe);
           },
         ),
         Text(

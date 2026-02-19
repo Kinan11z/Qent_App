@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_images.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
+import 'package:qent_app/core/utils/di/di.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 import 'package:qent_app/core/widgets/app_text_field.dart';
 import 'package:qent_app/core/widgets/or_widget.dart';
@@ -16,6 +17,8 @@ import 'package:qent_app/features/auth/presentation/screens/widgets/signup_scree
 import 'package:qent_app/features/auth/presentation/screens/widgets/social_login_button.dart';
 import 'package:qent_app/features/auth/presentation/screens/widgets/rich_text_link.dart';
 
+import '../../../../../core/services/validation.dart';
+
 class LoginScreenBody extends StatefulWidget {
   const LoginScreenBody({super.key});
 
@@ -24,7 +27,7 @@ class LoginScreenBody extends StatefulWidget {
 }
 
 class _LoginScreenBodyState extends State<LoginScreenBody> {
-  ValueNotifier<bool> isPasswordVisible = ValueNotifier<bool>(true);
+  ValueNotifier<bool> isPasswordVisible = ValueNotifier<bool>(false);
   late TextEditingController emailController;
   late TextEditingController passwordController;
   final _formKey = GlobalKey<FormState>();
@@ -74,12 +77,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                 AppTextField(
                   hintText: 'Email/Phone Number',
                   controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter your email or phone';
-                    }
-                    return null;
-                  },
+                  validator: FormValidators.validateEmail,
                 ),
                 18.verticalSpace,
                 ValueListenableBuilder(
@@ -87,17 +85,17 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   builder: (context, isVisible, children) {
                     return AppTextField(
                       hintText: 'Password',
-                      isTextVisible: isVisible,
+                      isTextHidden: !isVisible,
                       controller: passwordController,
-                      validator: passwordValidator,
+                      validator: FormValidators.validatePassword,
                       suffixIcon: IconButton(
                         onPressed: () {
                           isPasswordVisible.value = !isVisible;
                         },
                         icon: Icon(
                           isVisible
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
                         ),
                       ),
                     );
@@ -107,6 +105,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                 const RemembermeSection(),
                 28.verticalSpace,
                 BlocBuilder<AuthBloc, AuthState>(
+                  bloc: getIt<AuthBloc>(),
                   builder: (context, state) {
                     if (state is LoginLoading) {
                       return const Center(child: CircularProgressIndicator());
@@ -115,16 +114,16 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       text: 'Login',
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                                LoginEvent(
-                                  loginParams: LoginParams(
-                                    body: LoginParamsBody(
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                    ),
-                                  ),
+                          getIt<AuthBloc>().add(
+                            LoginEvent(
+                              loginParams: LoginParams(
+                                body: LoginParamsBody(
+                                  email: emailController.text,
+                                  password: passwordController.text,
                                 ),
-                              );
+                              ),
+                            ),
+                          );
                         }
                       },
                     );

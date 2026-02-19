@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/services/shared_preference_singelton.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_images.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/utils/constants/app_constant.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 
 class OnboardingPageViewBody2 extends StatelessWidget {
@@ -63,7 +63,8 @@ A New Experience With Car rental.''',
               AppButton(
                 text: 'Get Started',
                 onTap: () {
-                  Prefs.setBool(AppConstant.KIsOnboardingSeen, true);
+                  SharedPreferenceServices.setBool(
+                      AppConstant.KIsOnboardingSeen, true);
                   Navigator.pushReplacementNamed(
                     context,
                     AppRouteName.loginScreen,

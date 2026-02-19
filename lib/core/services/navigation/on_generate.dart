@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qent_app/core/utils/constants/app_route_name.dart';
+import 'package:qent_app/core/services/navigation/app_route_name.dart';
+import 'package:qent_app/features/auth/presentation/screens/confirm_reset_password_screen.dart';
 import 'package:qent_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:qent_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:qent_app/features/auth/presentation/screens/signup_screen.dart';
@@ -42,13 +43,36 @@ class AppRouter {
           const ResetPasswordScreen(),
         );
       case AppRouteName.verifyPhoneScreen:
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        final phoneNumber = args['phoneNumber'] as String? ?? '';
+        final countryCode = args['countryCode'] as String? ?? '';
         return buildRoute(
-          const VerifyPhoneScreen(),
+          VerifyPhoneScreen(
+            phoneNumber: phoneNumber,
+            countryCode: countryCode,
+          ),
         );
       case AppRouteName.verifyCodeScreen:
-        final phoneNumber = settings.arguments as String? ?? '+100******00';
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+
+        final phoneNumber = args['phoneNumber'] as String? ?? '+100******00';
+        final verifyToken = args['verifyToken'] as String? ?? '';
         return buildRoute(
-          VerifyCodeScreen(phoneNumber: phoneNumber),
+          VerifyCodeScreen(
+            phoneNumber: phoneNumber,
+            verifyToken: verifyToken,
+          ),
+        );
+      case AppRouteName.confirmResetPasswordScreen:
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+
+        final email = args['email'] as String? ?? '';
+        final resetToken = args['resetToken'] as String? ?? '';
+        return buildRoute(
+          ConfirmResetPasswordScreen(
+            email: email,
+            resetToken: resetToken,
+          ),
         );
       default:
         return buildRoute(const Scaffold());

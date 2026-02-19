@@ -30,6 +30,8 @@ class SignUpParamsBody extends BaseBodyModel {
   final String? countryId;
   final String? locationId;
   final String? availableToCreateCar;
+  final String? nationalId;
+  final String? dateOfBirth;
 
   SignUpParamsBody({
     required this.fullName,
@@ -39,6 +41,8 @@ class SignUpParamsBody extends BaseBodyModel {
     required this.countryId,
     required this.locationId,
     required this.availableToCreateCar,
+    this.nationalId,
+    this.dateOfBirth,
   });
 
   @override
@@ -50,5 +54,7 @@ class SignUpParamsBody extends BaseBodyModel {
         'email': email,
         'location_id': locationId,
         'available_to_create_car': availableToCreateCar,
+        'national_id': nationalId,
+        'date_of_birth': dateOfBirth,
       };
 }

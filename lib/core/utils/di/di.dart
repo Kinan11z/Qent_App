@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:qent_app/core/dio/ConnectionListener.dart';
 import 'package:qent_app/core/dio/factory.dart';
 import 'package:qent_app/core/state/appstate.dart';
 import 'package:qent_app/features/auth/data/datasources/remote/auth_remote_data_source.dart';
@@ -15,4 +16,5 @@ setupServicesLocator(pref) {
   getIt.registerLazySingleton(CountriesBloc.new);
   getIt.registerLazySingleton(AuthRemoteDataSource.new);
   getIt.registerLazySingleton(() => AppStateModel(pref));
+  getIt.registerLazySingleton<ConnectionService>(ConnectionService.new);
 }

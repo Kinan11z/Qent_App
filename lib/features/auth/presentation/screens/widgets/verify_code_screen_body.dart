@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:qent_app/core/utils/app_colors.dart';
-import 'package:qent_app/core/utils/app_images.dart';
-import 'package:qent_app/core/utils/app_text_style.dart';
+import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/resources/app_text_style.dart';
+import 'package:qent_app/core/utils/di/di.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
+import 'package:qent_app/features/auth/data/model/params/request_verify_code_params.dart';
+import 'package:qent_app/features/auth/presentation/manager/auth_bloc/auth_bloc.dart';
 import 'package:qent_app/features/auth/presentation/screens/widgets/rich_text_link.dart';
+
+import '../../../data/model/params/confirm_verify_code_params.dart';
 
 class VerifyCodeScreenBody extends StatefulWidget {
   final String phoneNumber;
+  final String verifyToken;
 
   const VerifyCodeScreenBody({
     super.key,
     required this.phoneNumber,
+    required this.verifyToken,
   });
 
   @override
@@ -58,8 +66,16 @@ class _VerifyCodeScreenBodyState extends State<VerifyCodeScreenBody> {
 
   void _handleContinue() {
     if (_otpCode.length == 4) {
-      // TODO: Verify OTP code
-      print('OTP Code: $_otpCode');
+      context.read<AuthBloc>().add(
+            ConfirmVerifyCodeEvent(
+              confirmVerifyCodeParams: ConfirmVerifyCodeParams(
+                body: ConfirmVerifyCodeParamsBody(
+                  code: _otpCode,
+                  verifyToken: widget.verifyToken,
+                ),
+              ),
+            ),
+          );
     }
   }
 
@@ -127,9 +143,18 @@ class _VerifyCodeScreenBodyState extends State<VerifyCodeScreenBody> {
                 ),
               ),
               28.verticalSpace,
-              AppButton(
-                text: 'Continue',
-                onTap: _handleContinue,
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is ConfirmVerifyCodeLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return AppButton(
+                    text: 'Continue',
+                    onTap: _handleContinue,
+                  );
+                },
               ),
               28.verticalSpace,
               Center(
@@ -137,7 +162,15 @@ class _VerifyCodeScreenBodyState extends State<VerifyCodeScreenBody> {
                   text1: "Didn't receive the OTP? ",
                   text2: 'Resend.',
                   onTap: () {
-                    // TODO: Resend OTP
+                    context.read<AuthBloc>().add(
+                          RequestVerifyCodeEvent(
+                            requestVerifyCodeParams: RequestVerifyCodeParams(
+                              body: RequestVerifyCodeParamsBody(
+                                phone: widget.phoneNumber,
+                              ),
+                            ),
+                          ),
+                        );
                   },
                 ),
               ),

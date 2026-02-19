@@ -238,14 +238,36 @@ abstract class RemoteDataSource {
     final responseJson =
         response.toString().isEmpty ? null : json.decode(response.toString());
 
+    String extractErrorMessage(dynamic json) {
+      if (json == null) return 'Unknown error';
+
+      // errors.message = List<String>
+      if (json['errors'] is Map &&
+          json['errors']['message'] is List &&
+          json['errors']['message'].isNotEmpty) {
+        return json['errors']['message'].first.toString();
+      }
+
+      // errors.message = String
+      if (json['errors'] is Map && json['errors']['message'] is String) {
+        return json['errors']['message'];
+      }
+
+      // message = String
+      if (json['message'] is String) {
+        return json['message'];
+      }
+
+      return 'Invalid input';
+    }
+
     switch (response.statusCode) {
       case 200:
       case 201:
         return responseJson;
+
       case 400:
-        final errorMessage = responseJson['errors'] is Map
-            ? responseJson['errors']['message']
-            : responseJson['message'] ?? 'Invalid input';
+        final errorMessage = extractErrorMessage(responseJson);
 
         if (errorMessage == 'Invalid refresh token.') {
           throw SessionTimedOutException();
@@ -255,25 +277,26 @@ abstract class RemoteDataSource {
           message: errorMessage,
           data: responseJson,
         );
+
       case 409:
-        final errorMessage409 = responseJson['errors']?['message'] ??
-            responseJson['message'] ??
-            'Conflict error';
-        throw InvalidInputException(message: errorMessage409);
+        throw InvalidInputException(
+          message: extractErrorMessage(responseJson),
+          data: responseJson,
+        );
+
       case 401:
       case 403:
         throw UnauthorisedException(data: responseJson);
+
       case 404:
         throw NotFoundException(data: responseJson);
+
       case 500:
-        final errorMessage500 = responseJson['errors']?['message'] ??
-            responseJson['ErrorMessage'] ??
-            responseJson['message'] ??
-            'Server error';
         throw ServerErrorException(
+          message: extractErrorMessage(responseJson),
           data: responseJson,
-          message: errorMessage500,
         );
+
       default:
         throw FetchDataException(
           message: AppHelperFunctions.inReleaseMode

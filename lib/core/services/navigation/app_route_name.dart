@@ -4,6 +4,7 @@ class AppRouteName {
   static const loginScreen = '/loginScreen';
   static const signUpScreen = '/signUpScreen';
   static const resetPasswordScreen = '/resetPasswordScreen';
+  static const confirmResetPasswordScreen = '/confirmResetPasswordScreen';
   static const verifyPhoneScreen = '/verifyPhoneScreen';
   static const verifyCodeScreen = '/verifyCodeScreen';
 }
