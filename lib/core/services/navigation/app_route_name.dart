@@ -7,4 +7,5 @@ class AppRouteName {
   static const confirmResetPasswordScreen = '/confirmResetPasswordScreen';
   static const verifyPhoneScreen = '/verifyPhoneScreen';
   static const verifyCodeScreen = '/verifyCodeScreen';
+  static const homeScreen = '/homeScreen';
 }

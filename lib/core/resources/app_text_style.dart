@@ -23,6 +23,11 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w700,
     color: AppColors.whiteColor,
   );
+  static TextStyle bold24 = TextStyle(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.whiteColor,
+  );
   static TextStyle bold30 = TextStyle(
     fontSize: 30.sp,
     fontWeight: FontWeight.w700,
@@ -35,6 +40,11 @@ abstract class AppTextStyles {
   );
   static TextStyle semiBold14 = TextStyle(
     fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.blackColor,
+  );
+  static TextStyle semiBold12 = TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.w600,
     color: AppColors.blackColor,
   );

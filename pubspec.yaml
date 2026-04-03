@@ -33,6 +33,7 @@ dependencies:
   get_it: ^9.2.0
   flutter_bloc: ^9.1.1
   syncfusion_flutter_datepicker: ^27.1.48
+  shimmer: ^3.0.0
 
 
 dev_dependencies:

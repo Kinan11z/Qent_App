@@ -74,6 +74,11 @@ class AppStateModel with ChangeNotifier, WidgetsBindingObserver {
   }
 
   bool get authenticated => _authenticated;
+  bool get hasActiveSession =>
+      _authenticated &&
+      _userToken != null &&
+      _userToken!.isNotEmpty &&
+      !isTokenExpired;
 
   String? get userToken => _userToken;
 
@@ -97,22 +102,39 @@ class AppStateModel with ChangeNotifier, WidgetsBindingObserver {
     prefs.setBool(AppConstant.IS_STAY_LOGGED, value);
   }
 
-  Future<void> refresh(String token, refreshToken, String expire) async {
+  Future<void> refresh(
+    String token,
+    String? refreshToken,
+    String? expire,
+  ) async {
     _userToken = token;
     _refreshToken = refreshToken;
-    final normalized = expire.replaceFirstMapped(
-      RegExp(r'\.(\d{6})\d*Z$'),
-      (m) => ".${m[1]}Z",
-    );
-    _expiresAt = DateTime.tryParse(normalized); //?? DateTime.now().toUtc();
+    _authenticated = token.isNotEmpty;
+    final normalizedExpire = (expire == null || expire.isEmpty)
+        ? null
+        : expire.replaceFirstMapped(
+            RegExp(r'\.(\d{6})\d*Z$'),
+            (m) => ".${m[1]}Z",
+          );
+    _expiresAt = normalizedExpire == null
+        ? DateTime.now().toUtc().add(const Duration(days: 30))
+        : DateTime.tryParse(normalizedExpire)?.toUtc();
     await prefs.remove(AppConstant.TOKEN);
     await prefs.remove(AppConstant.RefreshTOKEN);
     await prefs.remove(AppConstant.ExpireAt);
     await prefs.setString(AppConstant.TOKEN, token);
-    await prefs.setString(AppConstant.RefreshTOKEN, refreshToken);
-    await prefs.setString(AppConstant.ExpireAt, expire);
+    if (refreshToken != null && refreshToken.isNotEmpty) {
+      await prefs.setString(AppConstant.RefreshTOKEN, refreshToken);
+    }
+    if (_expiresAt != null) {
+      await prefs.setString(
+        AppConstant.ExpireAt,
+        _expiresAt!.toIso8601String(),
+      );
+    }
+    await prefs.setBool(AppConstant.IS_LOGGED_IN, _authenticated);
 
-    // notifyListeners();
+    notifyListeners();
   }
 
   Future<void> logOut() async {
@@ -120,6 +142,8 @@ class AppStateModel with ChangeNotifier, WidgetsBindingObserver {
     _userToken = null;
     _idToken = null;
     _refreshToken = null;
+    _userCurrent = null;
+    _email = null;
     // _themeMode = ThemeMode.light;
     // _expires = null;
     _expiresAt = null;
@@ -132,6 +156,8 @@ class AppStateModel with ChangeNotifier, WidgetsBindingObserver {
     await prefs.remove(AppConstant.IS_LOGGED_IN);
     await prefs.remove(AppConstant.IS_STAY_LOGGED);
     await prefs.remove(AppConstant.User_Id);
+
+    notifyListeners();
   }
 
   //
@@ -139,6 +165,7 @@ class AppStateModel with ChangeNotifier, WidgetsBindingObserver {
   AppStateModel(this.prefs);
   saveUser(UserModel? user) {
     _userCurrent = user;
+    _email = user?.email;
     //
     notifyListeners();
     //   if (_accountCreationTime == null && user?.createdAt != null) {
@@ -163,13 +190,16 @@ class AppStateModel with ChangeNotifier, WidgetsBindingObserver {
     final expiresStr = prefs.getString(AppConstant.ExpireAt) ?? '';
 
     _expiresAt =
-        DateTime.tryParse(expiresStr)?.toUtc() ?? DateTime.now().toUtc();
+        expiresStr.isEmpty ? null : DateTime.tryParse(expiresStr)?.toUtc();
 
     // Remember Me
     _rememberMe = prefs.getBool(AppConstant.IS_STAY_LOGGED) ?? false;
 
     // Set authenticated flag from token existence
     _authenticated = _userToken != null && _userToken!.isNotEmpty;
+    if (_authenticated && isTokenExpired) {
+      await logOut();
+    }
 
     // Load saved user profile
 

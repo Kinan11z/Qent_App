@@ -16,7 +16,8 @@ class AppTextField extends StatelessWidget {
       this.onTap,
       this.isNubmer,
       this.readOnly,
-      this.validator});
+      this.validator,
+      this.contentPadding});
   final String hintText;
   final bool? enabled;
   final TextEditingController? controller;
@@ -26,6 +27,7 @@ class AppTextField extends StatelessWidget {
   final bool? isNubmer;
   final bool? readOnly;
   final Function()? onTap;
+  final EdgeInsetsGeometry? contentPadding;
 
   final String? Function(String?)? validator;
   @override
@@ -46,7 +48,8 @@ class AppTextField extends StatelessWidget {
       readOnly: readOnly ?? false,
       onTap: onTap,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
+        contentPadding: contentPadding ??
+            EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
         hintText: hintText,
         suffixIcon: suffixIcon,
         hintStyle: AppTextStyles.regular14,

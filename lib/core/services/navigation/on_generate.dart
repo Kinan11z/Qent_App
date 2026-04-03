@@ -12,6 +12,8 @@ import 'package:qent_app/features/auth/presentation/screens/verify_phone_screen.
 import 'package:qent_app/features/splash/presentation/screens/onboarding_screen.dart';
 import 'package:qent_app/features/splash/presentation/screens/splash_screen.dart';
 
+import '../../../features/home/presentation/screens/home_screen.dart';
+
 Route<dynamic> buildRoute(Widget page) {
   if (Platform.isIOS) {
     return CupertinoPageRoute(
@@ -33,6 +35,10 @@ class AppRouter {
       case AppRouteName.loginScreen:
         return buildRoute(
           const LoginScreen(),
+        );
+      case AppRouteName.homeScreen:
+        return buildRoute(
+          const HomeScreen(),
         );
       case AppRouteName.signUpScreen:
         return buildRoute(

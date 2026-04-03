@@ -224,10 +224,10 @@ abstract class RemoteDataSource {
       throw RequestTimeoutException(message: 'Request timed out');
     } on AppException catch (e, stackTrace) {
       debugPrint('AppException caught: ${e.message}');
-      throw AppException('AppException');
+      rethrow;
     } catch (e, stackTrace) {
       debugPrint('Generic Exception caught: $e');
-      rethrow;
+      throw FetchDataException(message: 'Unexpected server response');
     }
 
     return responseJson;
@@ -235,27 +235,38 @@ abstract class RemoteDataSource {
 
   // ----------------------- RESPONSE HANDLER -----------------------
   dynamic _returnResponse(Response response) {
-    final responseJson =
-        response.toString().isEmpty ? null : json.decode(response.toString());
+    final dynamic responseJson = _decodeResponseBody(response);
 
-    String extractErrorMessage(dynamic json) {
-      if (json == null) return 'Unknown error';
+    String extractErrorMessage(dynamic jsonBody) {
+      if (jsonBody == null) return 'Unknown error';
+
+      if (jsonBody is String) {
+        return jsonBody.trim().isEmpty ? 'Unknown error' : jsonBody;
+      }
+
+      if (jsonBody is! Map<String, dynamic>) {
+        return 'Unexpected server response';
+      }
 
       // errors.message = List<String>
-      if (json['errors'] is Map &&
-          json['errors']['message'] is List &&
-          json['errors']['message'].isNotEmpty) {
-        return json['errors']['message'].first.toString();
+      if (jsonBody['errors'] is Map &&
+          jsonBody['errors']['message'] is List &&
+          jsonBody['errors']['message'].isNotEmpty) {
+        return jsonBody['errors']['message'].first.toString();
       }
 
       // errors.message = String
-      if (json['errors'] is Map && json['errors']['message'] is String) {
-        return json['errors']['message'];
+      if (jsonBody['errors'] is Map && jsonBody['errors']['message'] is String) {
+        return jsonBody['errors']['message'];
       }
 
       // message = String
-      if (json['message'] is String) {
-        return json['message'];
+      if (jsonBody['message'] is String) {
+        return jsonBody['message'];
+      }
+
+      if (jsonBody['detail'] is String) {
+        return jsonBody['detail'];
       }
 
       return 'Invalid input';
@@ -303,6 +314,17 @@ abstract class RemoteDataSource {
               ? 'Unknown Error'
               : response.data.toString(),
         );
+    }
+  }
+
+  dynamic _decodeResponseBody(Response response) {
+    final raw = response.toString();
+    if (raw.isEmpty) return null;
+
+    try {
+      return json.decode(raw);
+    } catch (_) {
+      return raw;
     }
   }
 }
