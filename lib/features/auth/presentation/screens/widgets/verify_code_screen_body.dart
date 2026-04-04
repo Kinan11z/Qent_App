@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/utils/di/di.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 import 'package:qent_app/features/auth/data/model/params/request_verify_code_params.dart';
 import 'package:qent_app/features/auth/presentation/manager/auth_bloc/auth_bloc.dart';
 import 'package:qent_app/features/auth/presentation/screens/widgets/rich_text_link.dart';
@@ -91,7 +91,7 @@ class _VerifyCodeScreenBodyState extends State<VerifyCodeScreenBody> {
               20.verticalSpace,
               Row(
                 children: [
-                  SvgPicture.asset(AppImages.darkLogo),
+                  const CustomPicture(imagePath: AppImages.darkLogo),
                   10.horizontalSpace,
                   Text(
                     'Qent',

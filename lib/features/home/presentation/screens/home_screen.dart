@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_images.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 
 import '../../../../core/resources/app_text_style.dart';
 import 'widgets/home_body_screen.dart';
@@ -16,8 +16,8 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            SvgPicture.asset(
-              AppImages.darkLogo,
+            CustomPicture(
+              imagePath: AppImages.darkLogo,
               height: 36.h,
               width: 36.w,
             ),

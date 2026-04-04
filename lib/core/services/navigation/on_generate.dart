@@ -9,6 +9,8 @@ import 'package:qent_app/features/auth/presentation/screens/reset_password_scree
 import 'package:qent_app/features/auth/presentation/screens/signup_screen.dart';
 import 'package:qent_app/features/auth/presentation/screens/verify_code_screen.dart';
 import 'package:qent_app/features/auth/presentation/screens/verify_phone_screen.dart';
+import 'package:qent_app/features/home/presentation/screens/best_cars_screen.dart';
+import 'package:qent_app/features/home/presentation/screens/nearest_cars_screen.dart';
 import 'package:qent_app/features/splash/presentation/screens/onboarding_screen.dart';
 import 'package:qent_app/features/splash/presentation/screens/splash_screen.dart';
 
@@ -39,6 +41,14 @@ class AppRouter {
       case AppRouteName.homeScreen:
         return buildRoute(
           const HomeScreen(),
+        );
+      case AppRouteName.bestCarsScreen:
+        return buildRoute(
+          const BestCarsScreen(),
+        );
+      case AppRouteName.nearestCarsScreen:
+        return buildRoute(
+          const NearestCarsScreen(),
         );
       case AppRouteName.signUpScreen:
         return buildRoute(

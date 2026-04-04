@@ -2,7 +2,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/resources/app_text_style.dart';
@@ -10,6 +9,7 @@ import 'package:qent_app/core/services/navigation/app_route_name.dart';
 import 'package:qent_app/core/utils/di/di.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
 import 'package:qent_app/core/widgets/app_text_field.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 import 'package:qent_app/features/auth/data/model/params/request_verify_code_params.dart';
 import 'package:qent_app/features/auth/presentation/manager/auth_bloc/auth_bloc.dart';
 
@@ -75,20 +75,21 @@ class _VerifyPhoneScreenBodyState extends State<VerifyPhoneScreenBody> {
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('✅${state.requestVerifyCodeEntity.message ?? ''}'),
+              content:
+                  Text('Success: ${state.requestVerifyCodeEntity.message ?? ''}'),
             ),
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  '✅ Your code: ${state.requestVerifyCodeEntity.code ?? ''}'),
+                  'Success: Your code: ${state.requestVerifyCodeEntity.code ?? ''}'),
             ),
           );
         }
         if (state is RequestVerifyCodeError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('❌${state.errorMessage ?? ''}'),
+              content: Text('Error: ${state.errorMessage ?? ''}'),
             ),
           );
         }
@@ -105,7 +106,7 @@ class _VerifyPhoneScreenBodyState extends State<VerifyPhoneScreenBody> {
                   20.verticalSpace,
                   Row(
                     children: [
-                      SvgPicture.asset(AppImages.darkLogo),
+                      const CustomPicture(imagePath: AppImages.darkLogo),
                       10.horizontalSpace,
                       Text(
                         'Qent',
@@ -241,23 +242,21 @@ class _CountryFieldState extends State<_CountryField> {
             child: Row(
               children: [
                 // Flag
-                Image.asset(
-                  country?.flagUri ?? widget.selectedCountry.flagUri!,
+                CustomPicture(
+                  imagePath: country?.flagUri ?? widget.selectedCountry.flagUri!,
                   package: 'country_code_picker',
                   width: 24.w,
                   height: 24.h,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return SizedBox(
-                      width: 24.w,
-                      height: 24.h,
-                      child: Icon(
-                        Icons.flag,
-                        size: 24.sp,
-                        color: AppColors.grayHintTextColor,
-                      ),
-                    );
-                  },
+                  errorWidget: SizedBox(
+                    width: 24.w,
+                    height: 24.h,
+                    child: Icon(
+                      Icons.flag,
+                      size: 24.sp,
+                      color: AppColors.grayHintTextColor,
+                    ),
+                  ),
                 ),
                 10.horizontalSpace,
                 // Country name

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/services/shared_preference_singelton.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_images.dart';
@@ -8,6 +7,7 @@ import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/utils/constants/app_constant.dart';
 import 'package:qent_app/core/services/navigation/app_route_name.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 
 class OnboardingPageViewBody2 extends StatelessWidget {
   const OnboardingPageViewBody2({
@@ -18,8 +18,8 @@ class OnboardingPageViewBody2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          AppImages.onboarding2,
+        const CustomPicture(
+          imagePath: AppImages.onboarding2,
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -43,8 +43,8 @@ class OnboardingPageViewBody2 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               60.verticalSpace,
-              SvgPicture.asset(
-                AppImages.lightLogo,
+              CustomPicture(
+                imagePath: AppImages.lightLogo,
                 width: 75.w,
                 height: 75.h,
               ),
@@ -56,7 +56,7 @@ A New Experience With Car rental.''',
               ),
               const Spacer(),
               Text(
-                'Discover your next adventure with Qent. we’re here to provide you with a seamless car rental experience. Let’s get started on your journey.',
+                "Discover your next adventure with Qent. we're here to provide you with a seamless car rental experience. Let's get started on your journey.",
                 style: AppTextStyles.regular16,
               ),
               40.verticalSpace,

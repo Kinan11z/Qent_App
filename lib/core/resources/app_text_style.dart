@@ -58,4 +58,9 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.grayHintTextColor,
   );
+  static TextStyle regular12 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grayHintTextColor,
+  );
 }

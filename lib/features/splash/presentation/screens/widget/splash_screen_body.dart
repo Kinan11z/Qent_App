@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/services/navigation/app_route_name.dart';
@@ -7,6 +6,7 @@ import 'package:qent_app/core/services/shared_preference_singelton.dart';
 import 'package:qent_app/core/state/appstate.dart';
 import 'package:qent_app/core/utils/constants/app_constant.dart';
 import 'package:qent_app/core/utils/di/di.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 import 'package:qent_app/features/home/presentation/manager/brand_bloc/brand_bloc.dart';
 
 class SplashScreenBody extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SplashScreenBodyState extends State<SplashScreenBody> {
     return Container(
       color: AppColors.blackColor,
       child: Center(
-        child: SvgPicture.asset(AppImages.lightLogo),
+        child: const CustomPicture(imagePath: AppImages.lightLogo),
       ),
     );
   }

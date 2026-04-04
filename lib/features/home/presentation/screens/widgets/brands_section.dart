@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/utils/di/di.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/resources/app_text_style.dart';
@@ -111,8 +111,9 @@ class BrandBlocSection extends StatelessWidget {
                               color: AppColors.blackColor,
                               shape: BoxShape.circle,
                             ),
-                            child: SvgPicture.network(
-                              state.brandsEntity.data?[index].image ?? '',
+                            child: CustomPicture(
+                              imagePath:
+                                  state.brandsEntity.data?[index].image ?? '',
                               fit: BoxFit.cover,
                             ),
                           ),

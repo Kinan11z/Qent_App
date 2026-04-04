@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/widgets/app_button.dart';
+import 'package:qent_app/core/widgets/custom_picture.dart';
 
 class OnboardingPageViewBody1 extends StatelessWidget {
   const OnboardingPageViewBody1({
@@ -16,8 +16,8 @@ class OnboardingPageViewBody1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          AppImages.onboarding1,
+        const CustomPicture(
+          imagePath: AppImages.onboarding1,
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -42,8 +42,8 @@ class OnboardingPageViewBody1 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               60.verticalSpace,
-              SvgPicture.asset(
-                AppImages.lightLogo,
+              CustomPicture(
+                imagePath: AppImages.lightLogo,
                 width: 75.w,
                 height: 75.h,
               ),

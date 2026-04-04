@@ -9,4 +9,5 @@ abstract class AppColors {
   static const Color grayHintTextColor = Color(0xFF7F7F7F);
   static const Color secondaryColor = Color(0xFFEDEDED);
   static const Color redColor = Color(0xFFEA0000);
+  static const Color starColor = Color(0xFFFF9A3D);
 }
