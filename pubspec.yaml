@@ -37,13 +37,10 @@ dependencies:
 
 
 dev_dependencies:
-  intl: ^0.19.0
   intl_utils: ^2.8.8
   flutter_test:
     sdk: flutter
-dependencies:
-  flutter_localizations:
-    sdk: flutter
+
 
   flutter_lints: ^4.0.0
   flutter_native_splash: ^2.4.1
