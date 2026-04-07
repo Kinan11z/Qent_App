@@ -10,4 +10,5 @@ abstract class AppColors {
   static const Color secondaryColor = Color(0xFFEDEDED);
   static const Color redColor = Color(0xFFEA0000);
   static const Color starColor = Color(0xFFFF9A3D);
+  static const Color blueColor = Color(0xFF0037FC);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
+import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/widgets/custom_picture.dart';
 import 'package:qent_app/features/home/domain/entities/best_car_entity.dart';
@@ -97,9 +98,8 @@ class BestCarCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: 17.sp,
+                      const CustomPicture(
+                        imagePath: AppImages.location,
                         color: AppColors.grayHintTextColor,
                       ),
                       4.horizontalSpace,
@@ -119,10 +119,8 @@ class BestCarCard extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.event_seat_outlined,
-                              size: 18.sp,
-                              color: AppColors.grayHintTextColor,
+                            const CustomPicture(
+                              imagePath: AppImages.seat,
                             ),
                             4.horizontalSpace,
                             Expanded(

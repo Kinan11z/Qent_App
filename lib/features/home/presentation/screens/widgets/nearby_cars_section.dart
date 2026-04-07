@@ -5,7 +5,7 @@ import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/services/navigation/app_route_name.dart';
 import 'package:qent_app/core/utils/di/di.dart';
-import 'package:qent_app/features/home/presentation/manager/nearest_cars_bloc.dart';
+import 'package:qent_app/features/home/presentation/manager/nearest_cars_bloc/nearest_cars_bloc.dart';
 import 'package:qent_app/features/home/presentation/screens/widgets/nearby_cars_carousel.dart';
 
 class NearbyCarsSection extends StatefulWidget {
@@ -71,7 +71,8 @@ class _NearbyCarsSectionBody extends StatelessWidget {
           18.verticalSpace,
           BlocBuilder<NearestCarsBloc, NearestCarsState>(
             builder: (context, state) {
-              if (state is NearestCarsInitial || state is GetNearestCarsLoading) {
+              if (state is NearestCarsInitial ||
+                  state is GetNearestCarsLoading) {
                 return const NearbyCarsLoadingCarousel(itemCount: 1);
               }
 

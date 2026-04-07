@@ -17,7 +17,12 @@ class AppTextField extends StatelessWidget {
       this.isNubmer,
       this.readOnly,
       this.validator,
-      this.contentPadding});
+      this.contentPadding,
+      this.onChanged,
+      this.focusNode,
+      this.autofocus,
+      this.textInputAction,
+      this.onFieldSubmitted});
   final String hintText;
   final bool? enabled;
   final TextEditingController? controller;
@@ -28,6 +33,11 @@ class AppTextField extends StatelessWidget {
   final bool? readOnly;
   final Function()? onTap;
   final EdgeInsetsGeometry? contentPadding;
+  final ValueChanged<String>? onChanged;
+  final FocusNode? focusNode;
+  final bool? autofocus;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
 
   final String? Function(String?)? validator;
   @override
@@ -35,10 +45,13 @@ class AppTextField extends StatelessWidget {
     return TextFormField(
       enabled: enabled,
       controller: controller,
+      focusNode: focusNode,
+      autofocus: autofocus ?? false,
       obscureText: isTextHidden ?? false,
       validator: validator,
       keyboardType:
           isNubmer == true ? TextInputType.number : TextInputType.text,
+      textInputAction: textInputAction,
       inputFormatters: isNubmer == true
           ? [
               FilteringTextInputFormatter.digitsOnly,
@@ -47,6 +60,8 @@ class AppTextField extends StatelessWidget {
           : [],
       readOnly: readOnly ?? false,
       onTap: onTap,
+      onChanged: onChanged,
+      onFieldSubmitted: onFieldSubmitted,
       decoration: InputDecoration(
         contentPadding: contentPadding ??
             EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),

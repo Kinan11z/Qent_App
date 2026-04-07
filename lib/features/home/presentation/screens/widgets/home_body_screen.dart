@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 
+import 'app_bottom_navigation_bar.dart';
 import 'best_cars_section.dart';
 import 'brands_section.dart';
 import 'nearby_cars_section.dart';
@@ -12,6 +13,11 @@ class HomeBodyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomOverlaySpacing = appBottomNavigationBarOverlayHeight(
+      context,
+      overlap: 34.h,
+    );
+
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -39,7 +45,7 @@ class HomeBodyScreen extends StatelessWidget {
                     const NearbyCarsSection(),
                   ],
                 )),
-            20.verticalSpace,
+            SizedBox(height: bottomOverlaySpacing),
           ],
         ),
       ),

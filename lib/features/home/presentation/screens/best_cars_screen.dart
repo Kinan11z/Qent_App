@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qent_app/core/resources/app_colors.dart';
 import 'package:qent_app/core/resources/app_text_style.dart';
 import 'package:qent_app/core/utils/di/di.dart';
-import 'package:qent_app/features/home/presentation/manager/best_cars_bloc.dart';
+import 'package:qent_app/features/home/presentation/manager/best_cars_bloc/best_cars_bloc.dart';
 import 'package:qent_app/features/home/presentation/screens/widgets/best_cars_grid.dart';
 
 class BestCarsScreen extends StatefulWidget {

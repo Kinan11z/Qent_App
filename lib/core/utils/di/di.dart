@@ -8,8 +8,9 @@ import 'package:qent_app/features/auth/presentation/manager/auth_bloc/auth_bloc.
 import 'package:qent_app/features/auth/presentation/manager/countries/countries_bloc.dart';
 import 'package:qent_app/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:qent_app/features/home/data/repositories/home_repository.dart';
-import 'package:qent_app/features/home/presentation/manager/best_cars_bloc.dart';
-import 'package:qent_app/features/home/presentation/manager/nearest_cars_bloc.dart';
+import 'package:qent_app/features/home/presentation/manager/best_cars_bloc/best_cars_bloc.dart';
+import 'package:qent_app/features/home/presentation/manager/nearest_cars_bloc/nearest_cars_bloc.dart';
+import 'package:qent_app/features/home/presentation/manager/search_cars_bloc/search_cars_bloc.dart';
 import 'package:qent_app/features/home/presentation/manager/brand_bloc/brand_bloc.dart';
 
 GetIt getIt = GetIt.instance;
@@ -23,6 +24,7 @@ setupServicesLocator(pref) {
   getIt.registerLazySingleton(BrandBloc.new);
   getIt.registerLazySingleton(BestCarsBloc.new);
   getIt.registerLazySingleton(NearestCarsBloc.new);
+  getIt.registerLazySingleton(SearchCarsBloc.new);
   getIt.registerLazySingleton(AuthRemoteDataSource.new);
   getIt.registerLazySingleton(HomeRemoteDataSource.new);
   getIt.registerLazySingleton(() => AppStateModel(pref));

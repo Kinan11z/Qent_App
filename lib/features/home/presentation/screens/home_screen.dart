@@ -5,6 +5,7 @@ import 'package:qent_app/core/resources/app_images.dart';
 import 'package:qent_app/core/widgets/custom_picture.dart';
 
 import '../../../../core/resources/app_text_style.dart';
+import 'widgets/app_bottom_navigation_bar.dart';
 import 'widgets/home_body_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -37,9 +38,9 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.scaffoldColor,
               border: Border.all(color: AppColors.grayBorderColor),
             ),
-            child: Icon(
-              Icons.notifications_none_outlined,
-              size: 28.sp,
+            child: const CustomPicture(
+              imagePath: AppImages.notifications,
+              fit: BoxFit.scaleDown,
               color: AppColors.grayHintTextColor,
             ),
           ),
@@ -52,7 +53,19 @@ class HomeScreen extends StatelessWidget {
           20.horizontalSpace,
         ],
       ),
-      body: const HomeBodyScreen(),
+      body: Stack(
+        children: [
+          const HomeBodyScreen(),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: const AppBottomNavigationBar(
+              currentItem: AppBottomNavItem.home,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

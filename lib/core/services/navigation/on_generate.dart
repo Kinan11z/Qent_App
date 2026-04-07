@@ -11,6 +11,7 @@ import 'package:qent_app/features/auth/presentation/screens/verify_code_screen.d
 import 'package:qent_app/features/auth/presentation/screens/verify_phone_screen.dart';
 import 'package:qent_app/features/home/presentation/screens/best_cars_screen.dart';
 import 'package:qent_app/features/home/presentation/screens/nearest_cars_screen.dart';
+import 'package:qent_app/features/home/presentation/screens/search_cars_screen.dart';
 import 'package:qent_app/features/splash/presentation/screens/onboarding_screen.dart';
 import 'package:qent_app/features/splash/presentation/screens/splash_screen.dart';
 
@@ -49,6 +50,12 @@ class AppRouter {
       case AppRouteName.nearestCarsScreen:
         return buildRoute(
           const NearestCarsScreen(),
+        );
+      case AppRouteName.searchCarsScreen:
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        final initialQuery = args['initialQuery'] as String? ?? '';
+        return buildRoute(
+          SearchCarsScreen(initialQuery: initialQuery),
         );
       case AppRouteName.signUpScreen:
         return buildRoute(

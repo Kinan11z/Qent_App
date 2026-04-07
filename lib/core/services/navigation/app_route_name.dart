@@ -10,4 +10,5 @@ class AppRouteName {
   static const homeScreen = '/homeScreen';
   static const bestCarsScreen = '/bestCarsScreen';
   static const nearestCarsScreen = '/nearestCarsScreen';
+  static const searchCarsScreen = '/searchCarsScreen';
 }
